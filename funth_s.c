@@ -23,7 +23,21 @@
 double hitzen_distantzia(float *hitz1, float *hitz2){
     // EGITEKO
     // Kalkulatu bi elementuren arteko distantzia (kosinu dena)
-    return 0.0;
+  double n = length(hitz1);
+  double absum = 0;
+  double a2sum = 0;
+  double b2sum = 0;
+
+  for(int i=0; i<n; i++) {
+    absum += hitz1[i]*hitz2[i];
+    a2sum += hitz1[i]*hitz1[i];
+    b2sum += hitz2[i]*hitz2[i];
+  }
+  double cos_sim = absum/(sqrt(a2sum)*sqrt(b2sum));
+
+  cos_sim = (cos_sim + 1)/2;
+
+    return 1 - cos_sim;
 }
 
 
