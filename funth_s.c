@@ -58,7 +58,7 @@ void multzo_gertuena (int hitzkop, float hitz[][ALDAKOP], float zent[][ALDAKOP],
     gertuena = 0;
     for(j=0;j<multzokop;j++) {
       dist = hitzen_distantzia(hitz[i],zent[j]);
-      if(min_dist > dist) {
+      if(min_dist>dist) {
         min_dist = dist;
         gertuena = j;
       }
@@ -84,6 +84,19 @@ double balidazioa (float hitz[][ALDAKOP], struct multzoinfo *kideak, float zent[
   // Kalkulatu taldeen trinkotasuna: kideen arteko distantzien batezbestekoa
   // Kalkulatu zentroideen trinkotasuna: zentroide bakoitzeko, besteekiko b.b.-ko distantzia
   // Kalkulatu cvi indizea
+  int i, j, zentroideBatura;
+
+  for(i=0;i<multzokop;i++) {
+    for(j=0;j<multzokop;j++) {
+      if(i!=j) {
+        zentroideBatura += hitzen_distantzia(zent[i], zent[j]);
+      }
+    }
+    zent_trinko[i] = zentroideBatura/multzokop;
+  }
+  
+
+
   return 0.0;
 }
 
