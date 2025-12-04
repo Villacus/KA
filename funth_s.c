@@ -32,6 +32,8 @@ double hitzen_distantzia(float *hitz1, float *hitz2){
     a2sum += hitz1[i]*hitz1[i];
     b2sum += hitz2[i]*hitz2[i];
   }
+  if (a2sum==0 || b2sum==0) return 1.0;
+  
   double cos_sim = absum/(sqrt(a2sum)*sqrt(b2sum));
 
   cos_sim = (cos_sim + 1)/2;
