@@ -121,7 +121,7 @@ double balidazioa (float hitz[][ALDAKOP], struct multzoinfo *kideak, float zent[
     s[k] = (zent_trinko[k]-multzo_trinko[k])/fmax(zent_trinko[k],multzo_trinko[k]);
     baturas += s[k];
   }
-  return s[k]/multzokop;
+  return baturas/multzokop;
 }
 
   
