@@ -37,7 +37,7 @@ double hitzen_distantzia(float *hitz1, float *hitz2){
 
   cos_sim = (cos_sim + 1)/2;
 
-    return 1 - cos_sim;
+    return 1.0 - cos_sim;
 }
 
 
