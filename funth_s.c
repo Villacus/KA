@@ -28,7 +28,7 @@ double hitzen_distantzia(float *hitz1, float *hitz2){
   double a2sum = 0;
   double b2sum = 0;
 
-  for(int i=0; i<n; i++) {
+  for (int i=0; i<n; i++) {
     absum += hitz1[i]*hitz2[i];
     a2sum += hitz1[i]*hitz1[i];
     b2sum += hitz2[i]*hitz2[i];
@@ -37,7 +37,7 @@ double hitzen_distantzia(float *hitz1, float *hitz2){
 
   cos_sim = (cos_sim + 1)/2;
 
-    return 1.0 - cos_sim;
+  return 1.0 - cos_sim;
 }
 
 
@@ -53,12 +53,12 @@ void multzo_gertuena (int hitzkop, float hitz[][ALDAKOP], float zent[][ALDAKOP],
 	// sailka: elementu bakoitzaren zentroide hurbilena, haren "taldea"
   int i, j, gertuena;
   double dist, min_dist;
-  for(i=0;i<hitzkop;i++) {
+  for (i=0;i<hitzkop;i++) {
     min_dist = DBL_MAX;
     gertuena = 0;
-    for(j=0;j<multzokop;j++) {
+    for (j=0;j<multzokop;j++) {
       dist = hitzen_distantzia(hitz[i],zent[j]);
-      if(min_dist>dist) {
+      if (min_dist>dist) {
         min_dist = dist;
         gertuena = j;
       }
@@ -84,20 +84,45 @@ double balidazioa (float hitz[][ALDAKOP], struct multzoinfo *kideak, float zent[
   // Kalkulatu taldeen trinkotasuna: kideen arteko distantzien batezbestekoa
   // Kalkulatu zentroideen trinkotasuna: zentroide bakoitzeko, besteekiko b.b.-ko distantzia
   // Kalkulatu cvi indizea
-  int i, j, zentroideBatura;
+  int i, j, k, zenbat, ind_x;
+  double batura
+  batura = 0.0;
+  zenbat = 0;
 
-  for(i=0;i<multzokop;i++) {
-    for(j=0;j<multzokop;j++) {
-      if(i!=j) {
-        zentroideBatura += hitzen_distantzia(zent[i], zent[j]);
+  for (k=0;k<multzokop;k++) {
+    batura = 0.0;
+    zenbat = 0;
+    for (i=0;i<kideak[k].kop;i++) {
+      ind_x = kideak[k].osagaiak[i];
+      for (j=0;j<kideak[k].kop;j++) {
+        if (i!=j) {
+          batura += hitzen_distantzia(hitz[ind_x],hitz[kideak[k].osagaiak[j]]);
+          zenbat++;
+        }
       }
     }
-    zent_trinko[i] = zentroideBatura/multzokop;
+    if (zenbat>1) {
+      multzo_trinko[k] = batura/(zenbat*(zenbat-1));
+    }
   }
-  
 
-
-  return 0.0;
+  for (k=0;k<multzokop;k++) {
+    batura = 0.0;
+    zenbat = 0;
+    for (i=0;i<multzokop;i++) {
+      if (i!=k) {
+        batura += hitzen_distantzia(zent[k],zent[i]);
+        zenbat++;
+      }
+    }
+    zent_trinko[k] = batura/multzokop-1;
+  }
+  double baturas = 0.0;
+  for (k=0;k<multzokop;k++) {
+    s[k] = (zent_trinko[k]-multzo_trinko[k])/fmax(zent_trinko[k],multzo_trinko[k]);
+    baturas += s[k];
+  }
+  return s[k]/multzokop;
 }
 
   
