@@ -23,12 +23,11 @@
 double hitzen_distantzia(float *hitz1, float *hitz2){
     // EGITEKO
     // Kalkulatu bi elementuren arteko distantzia (kosinu dena)
-  double n = length(hitz1);
   double absum = 0;
   double a2sum = 0;
   double b2sum = 0;
 
-  for (int i=0; i<n; i++) {
+  for (int i=0; i<ALDAKOP; i++) {
     absum += hitz1[i]*hitz2[i];
     a2sum += hitz1[i]*hitz1[i];
     b2sum += hitz2[i]*hitz2[i];
@@ -85,9 +84,7 @@ double balidazioa (float hitz[][ALDAKOP], struct multzoinfo *kideak, float zent[
   // Kalkulatu zentroideen trinkotasuna: zentroide bakoitzeko, besteekiko b.b.-ko distantzia
   // Kalkulatu cvi indizea
   int i, j, k, zenbat, ind_x;
-  double batura
-  batura = 0.0;
-  zenbat = 0;
+  double batura;
 
   for (k=0;k<multzokop;k++) {
     batura = 0.0;
@@ -117,6 +114,8 @@ double balidazioa (float hitz[][ALDAKOP], struct multzoinfo *kideak, float zent[
     }
     zent_trinko[k] = batura/multzokop-1;
   }
+
+  float s[multzokop];
   double baturas = 0.0;
   for (k=0;k<multzokop;k++) {
     s[k] = (zent_trinko[k]-multzo_trinko[k])/fmax(zent_trinko[k],multzo_trinko[k]);
