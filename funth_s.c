@@ -32,7 +32,6 @@ double hitzen_distantzia(float *hitz1, float *hitz2){
     a2sum += hitz1[i]*hitz1[i];
     b2sum += hitz2[i]*hitz2[i];
   }
-  if (a2sum==0 || b2sum==0) return 1.0;
   
   double cos_sim = absum/(sqrt(a2sum)*sqrt(b2sum));
 
@@ -90,19 +89,19 @@ double balidazioa (float hitz[][ALDAKOP], struct multzoinfo *kideak, float zent[
 
   for (k=0;k<multzokop;k++) {
     batura = 0.0;
-    zenbat = 0;
-    for (i=0;i<kideak[k].kop;i++) {
-      ind_x = kideak[k].osagaiak[i];
-      for (j=0;j<kideak[k].kop;j++) {
-        if (i!=j) {
-          batura += hitzen_distantzia(hitz[ind_x],hitz[kideak[k].osagaiak[j]]);
-        }
+    if (kideak[k].kop>1) {
+      for (i=0;i<kideak[k].kop;i++) {
+        ind_x = kideak[k].osagaiak[i];
+        for (j=0;j<kideak[k].kop;j++) {
+          if (i!=j) {
+            batura += hitzen_distantzia(hitz[ind_x],hitz[kideak[k].osagaiak[j]]);
+          }
 
+        }
       }
-    zenbat++;
-    }
-    if (zenbat>1) {
-      multzo_trinko[k] = batura/(zenbat*(zenbat-1));
+      multzo_trinko[k] = batura/(kideak[k].kop*(kideak[k].kop-1));
+    } else {
+      multzo_trinko[k] = 0.0;
     }
   }
 
@@ -137,6 +136,9 @@ void ztalorren_analisia (struct multzoinfo *kideak, float alor[][ALORRA], struct
   // Prozesatu UNESCO alorrei buruzko informazioa talde bakoitzeko kideen artean:
   //   UNESCO alor bakoitzarekiko atxikimenduaren neurrien mediana.
   //   UNESCO kode bakoitzarako, medianen maximoa eta minimoa eta zein taldetan.
+
+
+
 }
 
 
