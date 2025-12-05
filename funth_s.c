@@ -17,7 +17,7 @@
 /* 1 - Bi hitzen arteko distantzia kalkulatzeko funtzioa 
        (kosinu distantzia)
 
-       Sarrera:  ALDAKOP aldagaiko bi hitz (erreferentziaz)
+       Sdistantziakera:  ALDAKOP aldagaiko bi hitz (erreferentziaz)
        Irteera:  distantzia (double)
 ******************************************************************************************/
 double hitzen_distantzia(float *hitz1, float *hitz2){
@@ -43,7 +43,7 @@ double hitzen_distantzia(float *hitz1, float *hitz2){
 
 /* 2 - Multzo gertuena kalkulatzeko funtzioa (zentroide gertuena)
 
-       Sarrera:  hitzkop  hitz kopurua, int
+       Sdistantziakera:  hitzkop  hitz kopurua, int
                  hitz     EMAX x ALDAKOP tamainako matrizea
                  zent     multzokop x ALDAKOP tamainako matrizea
        Irteera:  sailka   EMAX tamainako bektorea, hitz bakoitzari dagokion multzoa
@@ -72,7 +72,7 @@ void multzo_gertuena (int hitzkop, float hitz[][ALDAKOP], float zent[][ALDAKOP],
 /* 3 - Sailkapenaren balidazioa: multzoen trinkotasuna eta zentroideen trinkotasuna
        cvi indizea kalkulatzen da
  
-       Sarrera:  hitz     fitxategiko hitzak (EMAX x ALDAKOP tamainako matrizea)
+       Sdistantziakera:  hitz     fitxategiko hitzak (EMAX x ALDAKOP tamainako matrizea)
                  kideak   multzoekideen zerrenda (multzokop tamainako struct-bektore bat: hitz eta kop)
                  zent	  multzoeen zentroideak (multzokop x ALDAKOP)
        Irteera:  cvi indizea 
@@ -127,7 +127,7 @@ double balidazioa (float hitz[][ALDAKOP], struct multzoinfo *kideak, float zent[
   
 /* 4 - Alorrak analizatzeko funtzioa 
  
-       Sarrera:  kideak  multzokideen zerrenda (multzokop tamainako struct-bektore bat: hitz eta kop)
+       Sdistantziakera:  kideak  multzokideen zerrenda (multzokop tamainako struct-bektore bat: hitz eta kop)
                  alor    alorrei buruzko informazioa (EMAX x ALORRA) 
        Irteera:  alordist alorren analisia: medianen maximoa/minimoa, eta multzoak
 ******************************************************************************************/
@@ -136,8 +136,33 @@ void ztalorren_analisia (struct multzoinfo *kideak, float alor[][ALORRA], struct
   // Prozesatu UNESCO alorrei buruzko informazioa talde bakoitzeko kideen artean:
   //   UNESCO alor bakoitzarekiko atxikimenduaren neurrien mediana.
   //   UNESCO kode bakoitzarako, medianen maximoa eta minimoa eta zein taldetan.
+  int k, i, j;
+  double dist, mediana;
+  double distantziak[EMAX];
+  for (k=0;k<multzokop;k++) {
+    
+    for (i=0;i<kideak[k].kop;i++) {
+      
+      for (j=0;j<EMAX;j++) {
+        distantziak[j] = hitzen_distantzia(kideak[k].osagaiak[i],alor[j]);
+      }
+      int l, m, temp;
+      for (l = 0; l < EMAX - 1; l++) {
+          for (m = 0; m < EMAX - l - 1; m++) {
+              if (distantziak[m] > distantziak[m + 1]) {
+                  temp = distantziak[m];
+                  distantziak[m] = distantziak[m + 1];
+                  distantziak[m + 1] = temp;
+              }
+          }
+      }
+    }
+    mediana = 
 
 
+
+
+  }
 
 }
 
@@ -239,7 +264,7 @@ int zentroide_berriak (float hitz[][ALDAKOP], float zent[][ALDAKOP], int *sailka
     double  diszent;
     double  baturak[multzokop][ALDAKOP+1];
     
-    bukatu = 1;		// 1: simulazioa bukatu da; 0: jarraitu behar da
+    bukatu = 1;		// 1: simulazioa bukatu da; 0: jdistantziakaitu behar da
 
     // Zentroide berriak: kideen dimentsio bakoitzeko aldagaien batezbestekoak
     // sailka: hitz bakoitzaren multzoa
