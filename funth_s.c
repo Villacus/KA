@@ -169,7 +169,7 @@ void ztalorren_analisia (struct multzoinfo *kideak, float alor[][ALORRA], struct
         }
         mediana = distantziak[n/2];
         if (mediana<alordist[a].mmin) {
-          alordist[a].mmin = 6.2;
+          alordist[a].mmin = mediana;
           alordist[a].multzomin = k;
         }
         if (mediana>alordist[a].mmax) {
