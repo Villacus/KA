@@ -167,7 +167,7 @@ void ztalorren_analisia (struct multzoinfo *kideak, float alor[][ALORRA], struct
             }
           }
         }
-
+        printf("SI Se ejecuta hasta aqui\n");
         mediana = distantziak[n/2];
         if (mediana<alordist[a].mmin) {
           alordist[a].mmin = mediana;
