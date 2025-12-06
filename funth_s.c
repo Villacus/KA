@@ -176,6 +176,7 @@ void ztalorren_analisia (struct multzoinfo *kideak, float alor[][ALORRA], struct
         }
         if (mediana>alordist[a].mmax) {
           alordist[a].mmax = mediana;
+          printf("%f\n", alordist[a].mmax);
           alordist[a].multzomax = k;
         }
       }
