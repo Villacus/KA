@@ -153,8 +153,8 @@ void ztalorren_analisia (struct multzoinfo *kideak, float alor[][ALORRA], struct
       if (n>0) {
         // Kalkulatu distantziak
         for (i=0;i<n;i++) {
-          //distantziak[i] = hitzen_distantzia(alor[a], kideak[k].osagaiak[i]);
-          distantziak[i] = alor[kideak[k].osagaiak[i]][a];
+          distantziak[i] = hitzen_distantzia(alor[a], kideak[k].osagaiak[i]);
+          //distantziak[i] = alor[kideak[k].osagaiak[i]][a];
         }
 
         // Ordenatu distantziak
