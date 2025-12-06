@@ -150,7 +150,6 @@ void ztalorren_analisia (struct multzoinfo *kideak, float alor[][ALORRA], struct
     for (k=0;k<multzokop;k++) {
 
       n = kideak[k].kop;
-      printf("Antes del IF\n");
       if (n>0) {
         // Kalkulatu distantziak
         for (i=0;i<n;i++) {
@@ -168,7 +167,6 @@ void ztalorren_analisia (struct multzoinfo *kideak, float alor[][ALORRA], struct
             }
           }
         }
-        printf("SI Se ejecuta hasta aqui\n");
         mediana = distantziak[n/2];
         if (mediana<alordist[a].mmin) {
           alordist[a].mmin = mediana;
