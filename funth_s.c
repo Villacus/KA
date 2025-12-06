@@ -136,29 +136,50 @@ void ztalorren_analisia (struct multzoinfo *kideak, float alor[][ALORRA], struct
   // Prozesatu UNESCO alorrei buruzko informazioa talde bakoitzeko kideen artean:
   //   UNESCO alor bakoitzarekiko atxikimenduaren neurrien mediana.
   //   UNESCO kode bakoitzarako, medianen maximoa eta minimoa eta zein taldetan.
-  int k, i, j;
-  double dist, mediana;
+  int k, i, a, n;
+  double mediana;
   double distantziak[EMAX];
-  for (k=0;k<multzokop;k++) {
-    
-    for (i=0;i<kideak[k].kop;i++) {
-      
-      for (j=0;j<EMAX;j++) {
-        distantziak[j] = hitzen_distantzia(kideak[k].osagaiak[i],alor[j]);
-      }
-      int l, m, temp;
-      for (l = 0; l < EMAX - 1; l++) {
-          for (m = 0; m < EMAX - l - 1; m++) {
-              if (distantziak[m] > distantziak[m + 1]) {
-                  temp = distantziak[m];
-                  distantziak[m] = distantziak[m + 1];
-                  distantziak[m + 1] = temp;
-              }
-          }
+
+  for (a=0;a<ALORRA;a++) {
+
+    alordist[a].mmax = FLT_MIN;
+    alordist[a].multzomax = -1;
+    alordist[a].mmin = FLT_MAX;
+    alordist[a].multzomin = -1;
+
+    for (k=0;k<multzokop;k++) {
+
+      n = kideak[k].kop;
+      if (n>0) {
+        // Kalkulatu distantziak
+        for (i=0;i<n;i++) {
+          //distantziak[i] = hitzen_distantzia(alor[a], kideak[k].osagaiak[i]);
+          distantziak[i] = alor[kideak[k].osagaiak[i]][a];
+        }
+
+        // Ordenatu distantziak
+        int l, m, temp;
+        for (l = 0; l < n - 1; l++) {
+            for (m = 0; m < n - 1 - l; m++) {
+                if (distantziak[m] > distantziak[m + 1]) {
+                    temp = distantziak[m];
+                    distantziak[m] = distantziak[m + 1];
+                    distantziak[m + 1] = temp;
+                }
+            }
+        }
+
+        mediana = distantziak[n/2];
+        if (mediana<alordist[a].min_mediana) {
+          alordist[a].min_mediana = mediana;
+          alordist[a].min_multzo = k;
+        }
+        if (mediana>alordist[a].max_mediana) {
+          alordist[a].max_mediana = mediana;
+          alordist[a].max_multzo = k;
+        }
       }
     }
-    mediana = 
-
 
 
 
