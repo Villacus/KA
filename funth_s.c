@@ -153,20 +153,19 @@ void ztalorren_analisia (struct multzoinfo *kideak, float alor[][ALORRA], struct
       if (n>0) {
         // Kalkulatu distantziak
         for (i=0;i<n;i++) {
-          distantziak[i] = hitzen_distantzia(alor[a], kideak[k].osagaiak[i]);
-          //distantziak[i] = alor[kideak[k].osagaiak[i]][a];
+          distantziak[i] = hitzen_distantzia(hitz[kideak[k].osagaiak[i]], alor[a]);
         }
 
         // Ordenatu distantziak
         int l, m, temp;
         for (l = 0; l < n - 1; l++) {
-            for (m = 0; m < n - 1 - l; m++) {
-                if (distantziak[m] > distantziak[m + 1]) {
-                    temp = distantziak[m];
-                    distantziak[m] = distantziak[m + 1];
-                    distantziak[m + 1] = temp;
-                }
+          for (m = 0; m < n - 1 - l; m++) {
+            if (distantziak[m] > distantziak[m + 1]) {
+              temp = distantziak[m];
+              distantziak[m] = distantziak[m + 1];
+              distantziak[m + 1] = temp;
             }
+          }
         }
 
         mediana = distantziak[n/2];
@@ -180,9 +179,6 @@ void ztalorren_analisia (struct multzoinfo *kideak, float alor[][ALORRA], struct
         }
       }
     }
-
-
-
   }
 
 }
