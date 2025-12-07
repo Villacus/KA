@@ -167,7 +167,7 @@ void ztalorren_analisia (struct multzoinfo *kideak, float alor[][ALORRA], struct
             }
           }
         }
-        mediana = distantziak[n/2];
+        mediana = distantziak[n/2+1];
         if (mediana<alordist[a].mmin && mediana!=0.0) {
           alordist[a].mmin = mediana;
           alordist[a].multzomin = k;
