@@ -143,7 +143,7 @@ void ztalorren_analisia (struct multzoinfo *kideak, float alor[][ALORRA], struct
 
     alordist[a].mmax = FLT_MIN;
     alordist[a].multzomax = -1;
-    alordist[a].mmin = FLT_MAX;
+    alordist[a].mmin = 1.0;
     alordist[a].multzomin = -1;
 
     for (k=0;k<multzokop;k++) {
