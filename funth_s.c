@@ -137,8 +137,8 @@ void ztalorren_analisia (struct multzoinfo *kideak, float alor[][ALORRA], struct
   //   UNESCO alor bakoitzarekiko atxikimenduaren neurrien mediana.
   //   UNESCO kode bakoitzarako, medianen maximoa eta minimoa eta zein taldetan.
   int k, i, a, n;
-  float mediana;
-  float distantziak[EMAX];
+  double mediana;
+  double distantziak[EMAX];
 
   for (a=0;a<ALORRA;a++) {
 
