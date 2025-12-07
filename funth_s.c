@@ -154,7 +154,6 @@ void ztalorren_analisia (struct multzoinfo *kideak, float alor[][ALORRA], struct
         // Kalkulatu distantziak
         for (i=0;i<=n;i++) {
           distantziak[i] = alor[kideak[k].osagaiak[i]][a];
-          printf("Distantzia alorra %f\n", distantziak[i]);  
         }
 
         // Ordenatu distantziak
@@ -168,6 +167,11 @@ void ztalorren_analisia (struct multzoinfo *kideak, float alor[][ALORRA], struct
             }
           }
         }
+
+        for (i=0;i<n;i++) {
+          printf("%f ",distantziak[i]);
+        }
+
         mediana = distantziak[n/2];
         if (mediana<=alordist[a].mmin && mediana!=0.0) {
           alordist[a].mmin = mediana;
