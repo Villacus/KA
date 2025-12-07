@@ -138,7 +138,6 @@ void ztalorren_analisia (struct multzoinfo *kideak, float alor[][ALORRA], struct
   //   UNESCO kode bakoitzarako, medianen maximoa eta minimoa eta zein taldetan.
   int k, i, a, n;
   double mediana;
-  double distantziak[EMAX];
 
   for (a=0;a<ALORRA;a++) {
 
@@ -151,6 +150,7 @@ void ztalorren_analisia (struct multzoinfo *kideak, float alor[][ALORRA], struct
 
       n = kideak[k].kop;
       if (n>0) {
+        double distantziak[n];
         // Kalkulatu distantziak
         for (i=0;i<n;i++) {
           distantziak[i] = alor[kideak[k].osagaiak[i]][a];
