@@ -18,8 +18,8 @@
 #include <stdlib.h>
 #include <time.h>
 
-#include "defineth.h"           	// konstante eta datu-egituren definizioak
-#include "funth.h"              	// programan deitzen diren funtzioak
+#include "../include/defineth.h"           	// konstante eta datu-egituren definizioak
+#include "../include/funth.h"              	// programan deitzen diren funtzioak
 
 char  *hitz_izen[EMAX];                // datu-baseko hitzak, string eran
 
@@ -182,12 +182,12 @@ void main (int argc, char *argv[])
 
   clock_gettime (CLOCK_REALTIME, &t5);
 
-  // Idatzi emaitzak emaitzak_s.out fitxategian
+  // Idatzi emaitzak emaitzak_p.out fitxategian
   // ==========================================
 
-  f2 = fopen ("emaitzak_s.out", "w");
+  f2 = fopen ("../emaitzak/emaitzak_p.out", "w");
   if (f2 == NULL) {
-    printf ("Errorea emaitzak_s.out fitxategia irekitzean\n");
+    printf ("Errorea emaitzak_p.out fitxategia irekitzean\n");
     exit (-1);
   }
 
