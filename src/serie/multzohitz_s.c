@@ -19,7 +19,7 @@
 #include <time.h>
 
 #include "../include/defineth.h"           	// konstante eta datu-egituren definizioak
-#include "../include/gfunth.h"              	// programan deitzen diren funtzioak
+#include "../include/funth.h"              	// programan deitzen diren funtzioak
 
 char  *hitz_izen[EMAX];                // datu-baseko hitzak, string eran
 

@@ -11,7 +11,7 @@
 #include <string.h>
 #include <omp.h>
 
-#include "defineth.h"		// konstante eta datu-egituren definizioak
+#include "../include/defineth.h"		// konstante eta datu-egituren definizioak
 
 
 /* 1 - Bi hitzen arteko distantzia kalkulatzeko funtzioa 
