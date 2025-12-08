@@ -16,7 +16,7 @@ cd compile
 
 ./compExekS.sh      # Serieko exekuzioa
 
-./compExekP.sh      # Parallelo exekuzioa
+./compExekP.sh      # Paralelo exekuzioa
 ```
 
 ## Karpeten egitura
