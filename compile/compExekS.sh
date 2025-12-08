@@ -14,5 +14,9 @@ diff ../emaitzak/emaitzak_s.out ../../ARK/3-proiektua/emaitzak1000.out
 echo "Git eguneraketa"
 cd ..
 git add .
-git commit -m "Archivos despues de compilar"
-git push
+if ! git diff --cached --quiet; then
+    git commit -m "Archivos despues de compilar"
+    git push
+else
+    echo "Ez dago aldaketarik, ez da commit egiterik."
+fi
