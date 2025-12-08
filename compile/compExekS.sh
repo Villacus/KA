@@ -1,5 +1,7 @@
 #!/bin/bash
 
+git pull
+
 echo "Compilatu"
 gcc -O2 -o ../multzohitz_s ../src/serie/multzohitz_s.c ../src/serie/funth_s.c -lm #Compilatu
 
@@ -8,3 +10,9 @@ echo "Exekutatu"
 
 echo "Konparatu"
 diff ../emaitzak/emaitzak_s.out ../../ARK/3-proiektua/emaitzak1000.out
+
+echo "Git eguneraketa"
+cd ..
+git add .
+git commit -m "Archivos despues de compilar"
+git push
