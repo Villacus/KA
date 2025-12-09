@@ -70,7 +70,7 @@ void multzo_gertuena (int hitzkop, float hitz[][ALDAKOP], float zent[][ALDAKOP],
         gertuena_LOK = j;
       }
     }
-    #omp critical
+    #pragma omp critical
     {
       if (min_dist_LOK < min_dist) {
         min_dist = min_dist_LOK;
