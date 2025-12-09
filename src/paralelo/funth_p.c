@@ -53,17 +53,32 @@ void multzo_gertuena (int hitzkop, float hitz[][ALDAKOP], float zent[][ALDAKOP],
 	// sailka: elementu bakoitzaren zentroide hurbilena, haren "taldea"
   int i, j, gertuena;
   double dist, min_dist;
+  min_dist = DBL_MAX;
+  #pragma omp parallel private(i,j) shared(hitz,zent,sailka) private(dist)
+  {
+  double min_dist_LOK;;
+  int gertuena_LOK;
+  #pragma omp for private(min_dist_LOK,gertuena_LOK)
   for (i=0;i<hitzkop;i++) {
-    min_dist = DBL_MAX;
-    gertuena = 0;
+    min_dist_LOK = DBL_MAX;
+    gertuena_LOK = 0;
+    #pragma omp parallel for
     for (j=0;j<multzokop;j++) {
       dist = hitzen_distantzia(hitz[i],zent[j]);
-      if (min_dist>dist) {
-        min_dist = dist;
-        gertuena = j;
+      if (min_dist_LOK>dist) {
+        min_dist_LOK = dist;
+        gertuena_LOK = j;
+      }
+    }
+    #omp critical
+    {
+      if (min_dist_LOK < min_dist) {
+        min_dist = min_dist_LOK;
+        gertuena = gertuena_LOK;
       }
     }
   sailka[i] = gertuena;
+  }
   }
 
 }
