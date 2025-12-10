@@ -102,9 +102,9 @@ double balidazioa (float hitz[][ALDAKOP], struct multzoinfo *kideak, float zent[
         }
       }
       multzo_trinko[k] = batura/(kideak[k].kop*(kideak[k].kop-1));
+      }
     } else {
       multzo_trinko[k] = 0.0;
-    }
     }
   }
 
