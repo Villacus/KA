@@ -84,7 +84,7 @@ double balidazioa (float hitz[][ALDAKOP], struct multzoinfo *kideak, float zent[
   // Kalkulatu taldeen trinkotasuna: kideen arteko distantzien batezbestekoa
   // Kalkulatu zentroideen trinkotasuna: zentroide bakoitzeko, besteekiko b.b.-ko distantzia
   // Kalkulatu cvi indizea
-  int i, j, k, zenbat, ind_x;
+  int i, j, k, ind_x;
   double batura;
 
   for (k=0;k<multzokop;k++) {
@@ -107,11 +107,9 @@ double balidazioa (float hitz[][ALDAKOP], struct multzoinfo *kideak, float zent[
 
   for (k=0;k<multzokop;k++) {
     batura = 0.0;
-    zenbat = 0;
     for (i=0;i<multzokop;i++) {
       if (i!=k) {
         batura += hitzen_distantzia(zent[k],zent[i]);
-        zenbat++;
       }
     }
     zent_trinko[k] = batura/(multzokop-1);
