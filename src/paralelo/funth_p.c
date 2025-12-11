@@ -26,13 +26,15 @@ double hitzen_distantzia(float *hitz1, float *hitz2){
   double absum = 0;
   double a2sum = 0;
   double b2sum = 0;
+  int i;
 
-  for (int i=0; i<ALDAKOP; i++) {
+  #pragma omp parallel for private(i) reduction(+:absum,a2sum,b2sum)
+  for (i=0; i<ALDAKOP; i++) {
     absum += hitz1[i]*hitz2[i];
     a2sum += hitz1[i]*hitz1[i];
     b2sum += hitz2[i]*hitz2[i];
   }
-  
+
   double cos_sim = absum/(sqrt(a2sum)*sqrt(b2sum));
 
   cos_sim = (cos_sim + 1)/2;
@@ -53,9 +55,12 @@ void multzo_gertuena (int hitzkop, float hitz[][ALDAKOP], float zent[][ALDAKOP],
 	// sailka: elementu bakoitzaren zentroide hurbilena, haren "taldea"
   int i, j, gertuena;
   double dist, min_dist;
+  min_dist = DBL_MAX;
+  #pragma omp parallel firstprivate(minl, gertl)
+  {
   for (i=0;i<hitzkop;i++) {
-    min_dist = DBL_MAX;
-    gertuena = 0;
+    minl = DBL_MAX;
+    #pragma omp parallel for private(j,dist) nowait
     for (j=0;j<multzokop;j++) {
       dist = hitzen_distantzia(hitz[i],zent[j]);
       if (min_dist>dist) {
@@ -63,7 +68,16 @@ void multzo_gertuena (int hitzkop, float hitz[][ALDAKOP], float zent[][ALDAKOP],
         gertuena = j;
       }
     }
-  sailka[i] = gertuena;
+    #pragma omp critical
+    {
+      if (min_dist>minl) {
+        min_dist = minl;
+        gertuena = gertl;
+      }
+    }
+    #pragma omp barrier
+    sailka[i] = gertuena;
+  }
   }
 
 }
