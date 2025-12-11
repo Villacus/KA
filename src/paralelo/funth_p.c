@@ -53,9 +53,10 @@ double hitzen_distantzia(float *hitz1, float *hitz2){
 void multzo_gertuena (int hitzkop, float hitz[][ALDAKOP], float zent[][ALDAKOP], int *sailka){
 	// EGITEKO
 	// sailka: elementu bakoitzaren zentroide hurbilena, haren "taldea"
-  int i, j, gertuena;
-  double dist, min_dist;
+  int i, j, gertuena, gertl;
+  double dist, min_dist, minl;
   min_dist = DBL_MAX;
+  minl = DBL_MAX;
   #pragma omp parallel firstprivate(minl, gertl)
   {
   for (i=0;i<hitzkop;i++) {
