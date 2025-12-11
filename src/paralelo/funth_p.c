@@ -108,8 +108,11 @@ double balidazioa (float hitz[][ALDAKOP], struct multzoinfo *kideak, float zent[
     }
   }
 
+  #pragma omp parallel
+  {
   for (k=0;k<multzokop;k++) {
     batura = 0.0;
+    #pragma omp for private(i) reduction(+:batura) nowait
     for (i=0;i<multzokop;i++) {
       if (i!=k) {
         batura += hitzen_distantzia(zent[k],zent[i]);
@@ -117,11 +120,13 @@ double balidazioa (float hitz[][ALDAKOP], struct multzoinfo *kideak, float zent[
     }
     zent_trinko[k] = batura/(multzokop-1);
   }
+  }
 
   double baturas = 0.0;
   for (k=0;k<multzokop;k++) {
     baturas += (zent_trinko[k]-multzo_trinko[k])/fmax(zent_trinko[k],multzo_trinko[k]);
   }
+
   return baturas/multzokop;
 }
 
