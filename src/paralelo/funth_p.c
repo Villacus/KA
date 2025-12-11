@@ -27,6 +27,7 @@ double hitzen_distantzia(float *hitz1, float *hitz2){
   double a2sum = 0;
   double b2sum = 0;
   int i;
+  #pragma omp parallel for reduction(+:absum,a2sum,b2sum)
   for (i=0; i<ALDAKOP; i++) {
     absum += hitz1[i]*hitz2[i];
     a2sum += hitz1[i]*hitz1[i];
@@ -53,6 +54,7 @@ void multzo_gertuena (int hitzkop, float hitz[][ALDAKOP], float zent[][ALDAKOP],
 	// sailka: elementu bakoitzaren zentroide hurbilena, haren "taldea"
   int i, j, gertuena;
   double dist, min_dist;
+  #pragma omp parallel for private(j,dist,min_dist,gertuena)
   for (i=0;i<hitzkop;i++) {
     min_dist = DBL_MAX;
     gertuena = 0;
@@ -87,11 +89,10 @@ double balidazioa (float hitz[][ALDAKOP], struct multzoinfo *kideak, float zent[
   int i, j, k, zenbat, ind_x;
   double batura;
 
+  #pragma omp parallel for private(i,j,ind_x,batura)
   for (k=0;k<multzokop;k++) {
     batura = 0.0;
     if (kideak[k].kop>1) {
-      #pragma omp parallel private(i, ind_x) shared(kideak)
-      {
       for (i=0;i<kideak[k].kop;i++) {
         ind_x = kideak[k].osagaiak[i];
         #pragma omp for private(j) reduction(+:batura) nowait
@@ -102,24 +103,20 @@ double balidazioa (float hitz[][ALDAKOP], struct multzoinfo *kideak, float zent[
         }
       }
       multzo_trinko[k] = batura/(kideak[k].kop*(kideak[k].kop-1));
-      }
     } else {
       multzo_trinko[k] = 0.0;
     }
   }
 
-  #pragma omp parallel
-  {
+  #pragma omp parallel for private(i,batura)
   for (k=0;k<multzokop;k++) {
     batura = 0.0;
-    #pragma omp for private(i) reduction(+:batura) nowait
     for (i=0;i<multzokop;i++) {
       if (i!=k) {
         batura += hitzen_distantzia(zent[k],zent[i]);
       }
     }
     zent_trinko[k] = batura/(multzokop-1);
-  }
   }
 
   double baturas = 0.0;
