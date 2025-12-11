@@ -1,8 +1,8 @@
 /*  Konputagailuen Arkitektura - Informatika Ingeniaritza (IF - EHU)
     OpenMP laborategia - PROIEKTUA
 
-    funth_s.c		SERIEKO BERTSIOA
-    multzohitz_s.c programan erabiltzen diren errutinak
+    funth_p.c		PARALELO BERTSIOA
+    multzohitz_p.c programan erabiltzen diren errutinak
 *****************************************************************************************/
 
 #include <stdlib.h>
@@ -26,9 +26,8 @@ double hitzen_distantzia(float *hitz1, float *hitz2){
   double absum = 0;
   double a2sum = 0;
   double b2sum = 0;
-  int i;
-  #pragma omp parallel for reduction(+:absum,a2sum,b2sum)
-  for (i=0; i<ALDAKOP; i++) {
+
+  for (int i=0; i<ALDAKOP; i++) {
     absum += hitz1[i]*hitz2[i];
     a2sum += hitz1[i]*hitz1[i];
     b2sum += hitz2[i]*hitz2[i];
@@ -54,7 +53,6 @@ void multzo_gertuena (int hitzkop, float hitz[][ALDAKOP], float zent[][ALDAKOP],
 	// sailka: elementu bakoitzaren zentroide hurbilena, haren "taldea"
   int i, j, gertuena;
   double dist, min_dist;
-  #pragma omp parallel for private(j,dist,min_dist,gertuena)
   for (i=0;i<hitzkop;i++) {
     min_dist = DBL_MAX;
     gertuena = 0;
@@ -86,10 +84,9 @@ double balidazioa (float hitz[][ALDAKOP], struct multzoinfo *kideak, float zent[
   // Kalkulatu taldeen trinkotasuna: kideen arteko distantzien batezbestekoa
   // Kalkulatu zentroideen trinkotasuna: zentroide bakoitzeko, besteekiko b.b.-ko distantzia
   // Kalkulatu cvi indizea
-  int i, j, k, zenbat, ind_x;
+  int i, j, k, ind_x;
   double batura;
 
-  #pragma omp parallel for private(i,j,ind_x,batura)
   for (k=0;k<multzokop;k++) {
     batura = 0.0;
     if (kideak[k].kop>1) {
@@ -99,6 +96,7 @@ double balidazioa (float hitz[][ALDAKOP], struct multzoinfo *kideak, float zent[
           if (i!=j) {
             batura += hitzen_distantzia(hitz[ind_x],hitz[kideak[k].osagaiak[j]]);
           }
+
         }
       }
       multzo_trinko[k] = batura/(kideak[k].kop*(kideak[k].kop-1));
@@ -107,7 +105,6 @@ double balidazioa (float hitz[][ALDAKOP], struct multzoinfo *kideak, float zent[
     }
   }
 
-  #pragma omp parallel for private(i,batura)
   for (k=0;k<multzokop;k++) {
     batura = 0.0;
     for (i=0;i<multzokop;i++) {
@@ -122,7 +119,6 @@ double balidazioa (float hitz[][ALDAKOP], struct multzoinfo *kideak, float zent[
   for (k=0;k<multzokop;k++) {
     baturas += (zent_trinko[k]-multzo_trinko[k])/fmax(zent_trinko[k],multzo_trinko[k]);
   }
-
   return baturas/multzokop;
 }
 

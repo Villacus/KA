@@ -14,6 +14,19 @@
 #include "../include/defineth.h"		// konstante eta datu-egituren definizioak
 
 
+  t_irak   = (t2.tv_sec - t1.tv_sec) + (t2.tv_nsec - t1.tv_nsec) / (double)1e9;
+  t_sailka = (t3.tv_sec - t2.tv_sec) + (t3.tv_nsec - t2.tv_nsec) / (double)1e9;
+  t_med    = (t4.tv_sec - t3.tv_sec) + (t4.tv_nsec - t3.tv_nsec) / (double)1e9;
+  t_alor    = (t5.tv_sec - t4.tv_sec) + (t5.tv_nsec - t4.tv_nsec) / (double)1e9;
+  t_idatzi = (t6.tv_sec - t5.tv_sec) + (t6.tv_nsec - t5.tv_nsec) / (double)1e9;
+
+
+  printf ("\n   T_hitz_distantzia: %7.3f s", t_irak);
+  printf ("\n   T_multzo_gertuena: %7.3f s", t_sailka);
+  printf ("\n   T_balidazioa:    %7.3f s", t_alor);
+  printf ("\n   T_ztalorren_analisia:    %7.3f s", t_idatzi);
+
+
 /* 1 - Bi hitzen arteko distantzia kalkulatzeko funtzioa 
        (kosinu distantzia)
 
@@ -23,6 +36,8 @@
 double hitzen_distantzia(float *hitz1, float *hitz2){
     // EGITEKO
     // Kalkulatu bi elementuren arteko distantzia (kosinu dena)
+  struct timespec t1, t2;
+  clock_gettime (CLOCK_REALTIME, &t1);
   double absum = 0;
   double a2sum = 0;
   double b2sum = 0;
@@ -36,6 +51,10 @@ double hitzen_distantzia(float *hitz1, float *hitz2){
   double cos_sim = absum/(sqrt(a2sum)*sqrt(b2sum));
 
   cos_sim = (cos_sim + 1)/2;
+
+  clock_gettime (CLOCK_REALTIME, &t2);
+  double t = (t2.tv_sec - t1.tv_sec) + (t2.tv_nsec - t1.tv_nsec) / (double)1e9;
+  printf ("\n   T_hitz_distantzia: %7.3f s", t);
 
   return 1.0 - cos_sim;
 }
