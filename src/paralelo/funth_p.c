@@ -57,11 +57,11 @@ void multzo_gertuena (int hitzkop, float hitz[][ALDAKOP], float zent[][ALDAKOP],
   double dist, min_dist, minl;
   min_dist = DBL_MAX;
   minl = DBL_MAX;
-  #pragma omp parallel firstprivate(minl, gertl)
+  #pragma omp parallel firstprivate(minl) private(i, j, gertuena, dist, gertl)
   {
   for (i=0;i<hitzkop;i++) {
     minl = DBL_MAX;
-    #pragma omp parallel for private(j,dist) nowait
+    #pragma omp for nowait
     for (j=0;j<multzokop;j++) {
       dist = hitzen_distantzia(hitz[i],zent[j]);
       if (min_dist>dist) {
