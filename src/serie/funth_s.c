@@ -24,8 +24,7 @@
 double hitzen_distantzia(float *hitz1, float *hitz2){
     // EGITEKO
     // Kalkulatu bi elementuren arteko distantzia (kosinu dena)
-  struct timespec t1, t2;
-  clock_gettime (CLOCK_REALTIME, &t1);
+
   double absum = 0;
   double a2sum = 0;
   double b2sum = 0;
@@ -39,10 +38,6 @@ double hitzen_distantzia(float *hitz1, float *hitz2){
   double cos_sim = absum/(sqrt(a2sum)*sqrt(b2sum));
 
   cos_sim = (cos_sim + 1)/2;
-
-  clock_gettime (CLOCK_REALTIME, &t2);
-  double t = (t2.tv_sec - t1.tv_sec) + (t2.tv_nsec - t1.tv_nsec) / (double)1e9;
-  printf ("\n   T_hitz_distantzia: %7.3f s", t);
 
   return 1.0 - cos_sim;
 }
