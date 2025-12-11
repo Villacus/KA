@@ -1,7 +1,5 @@
 #!/bin/bash
 
-git pull
-
 echo "Compilatu"
 gcc -O2 -fopenmp -o ../multzohitz_p ../src/paralelo/multzohitz_p.c ../src/paralelo/funth_p.c -lm #Compilatu
 
@@ -10,13 +8,3 @@ echo "Exekutatu"
 
 echo "Konparatu"
 diff ../emaitzak/emaitzak_p.out ../../ARK/3-proiektua/emaitzak1000.out
-
-echo "Git eguneraketa"
-cd ..
-git add .
-if ! git diff --cached --quiet; then
-    git commit -m "Archivos despues de compilar"
-    git push
-else
-    echo "Ez dago aldaketarik, ez da commit egiterik."
-fi
