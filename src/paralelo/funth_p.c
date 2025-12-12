@@ -1,8 +1,8 @@
 /*  Konputagailuen Arkitektura - Informatika Ingeniaritza (IF - EHU)
     OpenMP laborategia - PROIEKTUA
 
-    funth_p.c		PARALELO BERTSIOA
-    multzohitz_p.c programan erabiltzen diren errutinak
+    funth_s.c		SERIEKO BERTSIOA
+    multzohitz_s.c programan erabiltzen diren errutinak
 *****************************************************************************************/
 
 #include <stdlib.h>
@@ -10,6 +10,7 @@
 #include <float.h>		// DBL_MAX
 #include <string.h>
 #include <omp.h>
+#include <time.h>
 
 #include "../include/defineth.h"		// konstante eta datu-egituren definizioak
 
@@ -23,18 +24,17 @@
 double hitzen_distantzia(float *hitz1, float *hitz2){
     // EGITEKO
     // Kalkulatu bi elementuren arteko distantzia (kosinu dena)
+
   double absum = 0;
   double a2sum = 0;
   double b2sum = 0;
-  int i;
 
-  #pragma omp parallel for private(i) reduction(+:absum,a2sum,b2sum)
-  for (i=0; i<ALDAKOP; i++) {
+  for (int i=0; i<ALDAKOP; i++) {
     absum += hitz1[i]*hitz2[i];
     a2sum += hitz1[i]*hitz1[i];
     b2sum += hitz2[i]*hitz2[i];
   }
-
+  
   double cos_sim = absum/(sqrt(a2sum)*sqrt(b2sum));
 
   cos_sim = (cos_sim + 1)/2;
@@ -56,7 +56,6 @@ void multzo_gertuena (int hitzkop, float hitz[][ALDAKOP], float zent[][ALDAKOP],
   int i, j, gertuena;
   double dist, min_dist;
   
-  #pragma omp parallel for private(j, gertuena, dist, min_dist)
   for (i=0;i<hitzkop;i++) {
     min_dist = DBL_MAX;
     for (j=0;j<multzokop;j++) {
@@ -66,7 +65,7 @@ void multzo_gertuena (int hitzkop, float hitz[][ALDAKOP], float zent[][ALDAKOP],
         gertuena = j;
       }
     }
-    sailka[i] = gertuena;
+  sailka[i] = gertuena;
   }
 
 }
