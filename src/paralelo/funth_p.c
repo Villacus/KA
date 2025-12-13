@@ -58,7 +58,7 @@ void multzo_gertuena (int hitzkop, float hitz[][ALDAKOP], float zent[][ALDAKOP],
   double min_LOK;
   min_dist = DBL_MAX;
 
-  #pragma omp parallel private(i, j,min_dist, gertuena) shared(hitz, zent, sailka)
+  #pragma omp parallel private(i, min_dist, gertuena) shared(hitz, zent, sailka)
   {
     #pragma omp for schedule(static)
     for (i=0;i<hitzkop;i++) {
