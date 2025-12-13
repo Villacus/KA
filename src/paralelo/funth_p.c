@@ -58,22 +58,19 @@ void multzo_gertuena (int hitzkop, float hitz[][ALDAKOP], float zent[][ALDAKOP],
   double min_LOK;
   min_dist = DBL_MAX;
 
-  #pragma omp parallel private(i, j, min_dist, gertuena) shared(hitz, zent, sailka)
-  {
-    #pragma omp for schedule(static) nowait
-    for (i=0;i<hitzkop;i++) {
-      min_LOK = DBL_MAX;
-      for (j=0;j<multzokop;j++) {
-        dist = hitzen_distantzia(hitz[i],zent[j]);
-        if (min_dist>dist) {
-          min_dist = dist;
-          gertuena = j;
-        }
+  #pragma omp parallel for private(i, j, min_dist, gertuena) shared(hitz, zent, sailka) schedule(static) nowait
+  for (i=0;i<hitzkop;i++) {
+    min_LOK = DBL_MAX;
+    for (j=0;j<multzokop;j++) {
+      dist = hitzen_distantzia(hitz[i],zent[j]);
+      if (min_dist>dist) {
+        min_dist = dist;
+        gertuena = j;
       }
-      #pragma omp single
-      {
-        sailka[i] = gertuena;
-      }
+    }
+    #pragma omp single
+    {
+      sailka[i] = gertuena;
     }
   }
 
