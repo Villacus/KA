@@ -54,13 +54,10 @@ void multzo_gertuena (int hitzkop, float hitz[][ALDAKOP], float zent[][ALDAKOP],
 	// sailka: elementu bakoitzaren zentroide hurbilena, haren "taldea"
   int i, j, gertuena;
   double dist, min_dist;
-  int gert_LOK;
-  double min_LOK;
-  min_dist = DBL_MAX;
 
-  #pragma omp parallel for private(i, j, dist, min_dist, gertuena) shared(hitz, zent, sailka) schedule(dynamic) nowait
+  #pragma omp parallel for private(i, j, dist, min_dist, gertuena) shared(hitz, zent, sailka) schedule(dynamic) num_threads(24)
   for (i=0;i<hitzkop;i++) {
-    min_LOK = DBL_MAX;
+    min_dist = DBL_MAX;
     for (j=0;j<multzokop;j++) {
       dist = hitzen_distantzia(hitz[i],zent[j]);
       if (min_dist>dist) {
@@ -92,6 +89,10 @@ double balidazioa (float hitz[][ALDAKOP], struct multzoinfo *kideak, float zent[
   int i, j, k, ind_x;
   double batura;
 
+  #pragma omp sections
+  {
+  #pragma omp section
+  {
   for (k=0;k<multzokop;k++) {
     batura = 0.0;
     if (kideak[k].kop>1) {
@@ -109,7 +110,10 @@ double balidazioa (float hitz[][ALDAKOP], struct multzoinfo *kideak, float zent[
       multzo_trinko[k] = 0.0;
     }
   }
+  }
 
+  #pragma omp section
+  {
   for (k=0;k<multzokop;k++) {
     batura = 0.0;
     for (i=0;i<multzokop;i++) {
@@ -118,6 +122,8 @@ double balidazioa (float hitz[][ALDAKOP], struct multzoinfo *kideak, float zent[
       }
     }
     zent_trinko[k] = batura/(multzokop-1);
+  }
+  }
   }
 
   double baturas = 0.0;
