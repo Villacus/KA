@@ -10,7 +10,6 @@
 #include <float.h>		// DBL_MAX
 #include <string.h>
 #include <omp.h>
-#include <time.h>
 
 #include "../include/defineth.h"		// konstante eta datu-egituren definizioak
 
@@ -29,7 +28,6 @@ double hitzen_distantzia(float *hitz1, float *hitz2){
   double a2sum = 0;
   double b2sum = 0;
 
-  #pragma omp parallel for reduction(+:absum,a2sum,b2sum)
   for (int i=0; i<ALDAKOP; i++) {
     absum += hitz1[i]*hitz2[i];
     a2sum += hitz1[i]*hitz1[i];
@@ -56,17 +54,32 @@ void multzo_gertuena (int hitzkop, float hitz[][ALDAKOP], float zent[][ALDAKOP],
 	// sailka: elementu bakoitzaren zentroide hurbilena, haren "taldea"
   int i, j, gertuena;
   double dist, min_dist;
-  
-  for (i=0;i<hitzkop;i++) {
-    min_dist = DBL_MAX;
-    for (j=0;j<multzokop;j++) {
-      dist = hitzen_distantzia(hitz[i],zent[j]);
-      if (min_dist>dist) {
-        min_dist = dist;
-        gertuena = j;
+  int gert_LOK;
+  double min_LOK;
+  min_dist = DBL_MAX;
+
+  #pragma omp parallel public(min_dist, gertuena) private(i, min_LOK, gert_LOK) shared(hitz, zent) nowait
+  {
+    for (i=0;i<hitzkop;i++) {
+      min_LOK = DBL_MAX;
+      #pragma omp for private(j,dist) nowait
+      for (j=0;j<multzokop;j++) {
+        dist = hitzen_distantzia(hitz[i],zent[j]);
+        if (min_LOK>dist) {
+          min_LOK = dist;
+          gert_LOK = j;
+        }
       }
+      #pragma omp critical
+      {
+        if (min_dist>min_LOK) {
+          min_dist = min_LOK;
+          gertuena = gert_LOK;
+        }
+      }
+      #pragma omp barrier
+      sailka[i] = gertuena;
     }
-  sailka[i] = gertuena;
   }
 
 }
