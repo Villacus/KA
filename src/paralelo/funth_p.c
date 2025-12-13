@@ -70,6 +70,7 @@ void multzo_gertuena (int hitzkop, float hitz[][ALDAKOP], float zent[][ALDAKOP],
           gertuena = j;
         }
       }
+      #pragma omp atomic
       sailka[i] = gertuena;
     }
   }
