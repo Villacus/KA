@@ -21,8 +21,6 @@ cd compile
 
 ## Karpeten egitura
 
-## Karpeten egitura
-
 ```
 KA/
 ├── src/
