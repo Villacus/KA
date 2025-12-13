@@ -94,7 +94,7 @@ double balidazioa (float hitz[][ALDAKOP], struct multzoinfo *kideak, float zent[
     if (kideak[k].kop>1) {
       for (i=0;i<kideak[k].kop;i++) {
         ind_x = kideak[k].osagaiak[i];
-        for (j=0;j<kideak[k].kop;j++) {
+        for (j=i+1;j<kideak[k].kop;j++) {
           if (i!=j) {
             batura += hitzen_distantzia(hitz[ind_x],hitz[kideak[k].osagaiak[j]]);
           }
