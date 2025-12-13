@@ -55,7 +55,7 @@ void multzo_gertuena (int hitzkop, float hitz[][ALDAKOP], float zent[][ALDAKOP],
   int i, j, gertuena;
   double dist, min_dist;
 
-  #pragma omp parallel for private(i, j, dist, min_dist, gertuena) shared(hitz, zent, sailka) schedule(dynamic) num_threads(24)
+  #pragma omp parallel for private(i, j, dist, min_dist, gertuena) shared(hitz, zent, sailka) schedule(dynamic, 1) num_threads(48)
   for (i=0;i<hitzkop;i++) {
     min_dist = DBL_MAX;
     for (j=0;j<multzokop;j++) {
@@ -87,21 +87,16 @@ double balidazioa (float hitz[][ALDAKOP], struct multzoinfo *kideak, float zent[
   // Kalkulatu zentroideen trinkotasuna: zentroide bakoitzeko, besteekiko b.b.-ko distantzia
   // Kalkulatu cvi indizea
   int i, j, k, ind_x;
-  double batura, batura2;
+  double batura;
 
-  #pragma omp sections private(k, i, j)
+  #pragma omp parallel private(batura, k, i, j, ind_x)
   {
-  #pragma omp section
-  {
-  #pragma omp parallel
-  {
+  #pragma omp parallel for
   for (k=0;k<multzokop;k++) {
-    batura = 0.0;
+    double batura = 0.0;
     if (kideak[k].kop>1) {
-      #pragma omp for private(i, ind_x)
       for (i=0;i<kideak[k].kop;i++) {
         ind_x = kideak[k].osagaiak[i];
-	#pragma omp for private(j) reduction(+:batura)
         for (j=0;j<kideak[k].kop;j++) {
           if (i!=j) {
             batura += hitzen_distantzia(hitz[ind_x],hitz[kideak[k].osagaiak[j]]);
@@ -114,26 +109,16 @@ double balidazioa (float hitz[][ALDAKOP], struct multzoinfo *kideak, float zent[
       multzo_trinko[k] = 0.0;
     }
   }
-  }
-  }
 
-  #pragma omp section
-  {
-  #pragma omp parallel
-  {
-  #pragma omp for private(k)
+  #pragma omp for
   for (k=0;k<multzokop;k++) {
-    batura2 = 0.0;
-    #pragma omp for private(i) reduction(+:batura2) nowait
+    batura = 0.0;
     for (i=0;i<multzokop;i++) {
       if (i!=k) {
-        batura2 += hitzen_distantzia(zent[k],zent[i]);
+        batura += hitzen_distantzia(zent[k],zent[i]);
       }
     }
-    zent_trinko[k] = batura2/(multzokop-1);
-  }
-  }
-  }
+    zent_trinko[k] = batura/(multzokop-1);
   }
   }
 
