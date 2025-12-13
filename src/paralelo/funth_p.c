@@ -90,9 +90,9 @@ double balidazioa (float hitz[][ALDAKOP], struct multzoinfo *kideak, float zent[
   double batura;
   double baturas = 0.0;
 
-  #pragma omp parallel private(batura, k, i, j, ind_x) num_threads(24)
+  #pragma omp parallel private(batura, k, i, j, ind_x) num_threads(48)
   {
-    #pragma omp for schedule(dynamic, 1) ordered
+    #pragma omp for schedule(dynamic, 1)
     for (k=0;k<multzokop;k++) {
       double batura = 0.0;
       if (kideak[k].kop>1) {
@@ -108,7 +108,7 @@ double balidazioa (float hitz[][ALDAKOP], struct multzoinfo *kideak, float zent[
       }
     }
 
-    #pragma omp for schedule(dynamic, 1)
+    #pragma omp for schedule(static)
     for (k=0;k<multzokop;k++) {
       batura = 0.0;
       for (i=k+1;i<multzokop;i++) {
@@ -116,11 +116,10 @@ double balidazioa (float hitz[][ALDAKOP], struct multzoinfo *kideak, float zent[
       }
       zent_trinko[k] = batura/(multzokop-1);
     }
-
-    #pragma omp for reduction(+:baturas)
+    }
     for (k=0;k<multzokop;k++) {
       baturas += (zent_trinko[k]-multzo_trinko[k])/fmax(zent_trinko[k],multzo_trinko[k]);
-    }
+    
  }
   return baturas/multzokop;
 }
