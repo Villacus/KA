@@ -91,41 +91,41 @@ double balidazioa (float hitz[][ALDAKOP], struct multzoinfo *kideak, float zent[
 
   #pragma omp parallel private(batura, k, i, j, ind_x)
   {
-  #pragma omp parallel for
-  for (k=0;k<multzokop;k++) {
-    double batura = 0.0;
-    if (kideak[k].kop>1) {
-      for (i=0;i<kideak[k].kop;i++) {
-        ind_x = kideak[k].osagaiak[i];
-        for (j=0;j<kideak[k].kop;j++) {
-          if (i!=j) {
-            batura += hitzen_distantzia(hitz[ind_x],hitz[kideak[k].osagaiak[j]]);
+    #pragma omp parallel for schedule(dynamic, 1) nowait
+    for (k=0;k<multzokop;k++) {
+      double batura = 0.0;
+      if (kideak[k].kop>1) {
+        for (i=0;i<kideak[k].kop;i++) {
+          ind_x = kideak[k].osagaiak[i];
+          for (j=0;j<kideak[k].kop;j++) {
+            if (i!=j) {
+              batura += hitzen_distantzia(hitz[ind_x],hitz[kideak[k].osagaiak[j]]);
+            }
           }
+        }
+        multzo_trinko[k] = batura/(kideak[k].kop*(kideak[k].kop-1));
+      } else {
+        multzo_trinko[k] = 0.0;
+      }
+    }
 
+    #pragma omp for shedule(dynamic)
+    for (k=0;k<multzokop;k++) {
+      batura = 0.0;
+      for (i=0;i<multzokop;i++) {
+        if (i!=k) {
+          batura += hitzen_distantzia(zent[k],zent[i]);
         }
       }
-      multzo_trinko[k] = batura/(kideak[k].kop*(kideak[k].kop-1));
-    } else {
-      multzo_trinko[k] = 0.0;
+      zent_trinko[k] = batura/(multzokop-1);
     }
-  }
 
-  #pragma omp for
-  for (k=0;k<multzokop;k++) {
-    batura = 0.0;
-    for (i=0;i<multzokop;i++) {
-      if (i!=k) {
-        batura += hitzen_distantzia(zent[k],zent[i]);
-      }
+    double baturas = 0.0;
+    #pragma omp for schedule(dynamic) reduction(+:baturas)
+    for (k=0;k<multzokop;k++) {
+      baturas += (zent_trinko[k]-multzo_trinko[k])/fmax(zent_trinko[k],multzo_trinko[k]);
     }
-    zent_trinko[k] = batura/(multzokop-1);
-  }
-  }
-
-  double baturas = 0.0;
-  for (k=0;k<multzokop;k++) {
-    baturas += (zent_trinko[k]-multzo_trinko[k])/fmax(zent_trinko[k],multzo_trinko[k]);
-  }
+ }
   return baturas/multzokop;
 }
 
