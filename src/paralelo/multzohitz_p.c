@@ -148,6 +148,7 @@ void main (int argc, char *argv[])
 
     // B. Sailkatzearen "kalitatea"
     // ===========================
+    clock_gettime (CLOCK_REALTIME, &t_kid1);
     for (i=0; i<multzokop; i++)  kideak[i].kop = 0;
 
     // Multzo bakoitzeko hitzak (osagaiak) eta kopurua
@@ -157,7 +158,9 @@ void main (int argc, char *argv[])
       kideak[multzoa].osagaiak[kideak[multzoa].kop] = i;
       kideak[multzoa].kop ++;
     }
-
+    clock_gettime (CLOCK_REALTIME, &t_kid2);
+    t_kid += (t_kid2.tv_sec - t_kid1.tv_sec) + (t_kid2.tv_nsec - t_kid1.tv_nsec) / (double)1e9;
+    
     // Sailkatzearen balidazioa eta konbergentzia
     /** OSATZEKO funth_s.c fitxategian **/
     clock_gettime (CLOCK_REALTIME, &t_bal1);

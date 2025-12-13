@@ -127,12 +127,19 @@ void main (int argc, char *argv[])
     {
       // Kalkulatu multzo gertuena
       /** OSATZEKO funth_s.c fitxategian **/
+      clock_gettime (CLOCK_REALTIME, &t_tg1);
       multzo_gertuena (hitzkop, hitz, zent, sailka);
+      clock_gettime (CLOCK_REALTIME, &t_tg2);
+      t_tg += (t_tg2.tv_sec - t_tg1.tv_sec) + (t_tg2.tv_nsec - t_tg1.tv_nsec) / (double)1e9;
 
       // Kalkulatu multzoetako zentroide berriak: kideen dimentsio bakoitzaren batezbestekoa
       // Aldaketa zentroideetan DELTA1 baino txikiagoa bada, bukatu = 1
       /** OSATZEKO funth_s.c fitxategian **/
+      clock_gettime (CLOCK_REALTIME, &t_zb1);
       bukatu = zentroide_berriak (hitz, zent, sailka, hitzkop);
+      clock_gettime (CLOCK_REALTIME, &t_zb2);
+      t_zb += (t_zb2.tv_sec - t_zb1.tv_sec) + (t_zb2.tv_nsec - t_zb1.tv_nsec) / (double)1e9;
+
 
       iterkop ++;
     }
@@ -140,6 +147,7 @@ void main (int argc, char *argv[])
 
     // B. Sailkatzearen "kalitatea"
     // ===========================
+    clock_gettime (CLOCK_REALTIME, &t_kid1);
     for (i=0; i<multzokop; i++)  kideak[i].kop = 0;
 
     // Multzo bakoitzeko hitzak (osagaiak) eta kopurua
@@ -149,10 +157,15 @@ void main (int argc, char *argv[])
       kideak[multzoa].osagaiak[kideak[multzoa].kop] = i;
       kideak[multzoa].kop ++;
     }
-
+    clock_gettime (CLOCK_REALTIME, &t_kid2);
+    t_kid += (t_kid2.tv_sec - t_kid1.tv_sec) + (t_kid2.tv_nsec - t_kid1.tv_nsec) / (double)1e9;
+    
     // Sailkatzearen balidazioa eta konbergentzia
     /** OSATZEKO funth_s.c fitxategian **/
+    clock_gettime (CLOCK_REALTIME, &t_bal1);
     cvi = balidazioa (hitz, kideak, zent, multzo_trinko);
+    clock_gettime (CLOCK_REALTIME, &t_bal2);
+    t_bal += (t_bal2.tv_sec - t_bal1.tv_sec) + (t_bal2.tv_nsec - t_bal1.tv_nsec) / (double)1e9;
 
     dif = cvi - cvi_zaharra;
     if (dif < DELTA2 || (multzokop+10)>MULTZOKOPMAX) amaitu_sailkapena = 1;
@@ -182,12 +195,12 @@ void main (int argc, char *argv[])
 
   clock_gettime (CLOCK_REALTIME, &t5);
 
-  // Idatzi emaitzak emaitzak_s.out fitxategian
+  // Idatzi emaitzak emaitzak_p.out fitxategian
   // ==========================================
 
-  f2 = fopen ("../emaitzak/emaitzak_s.out", "w");
+  f2 = fopen ("../emaitzak/emaitzak_p.out", "w");
   if (f2 == NULL) {
-    printf ("Errorea emaitzak_s.out fitxategia irekitzean\n");
+    printf ("Errorea emaitzak_p.out fitxategia irekitzean\n");
     exit (-1);
   }
 
@@ -237,12 +250,16 @@ void main (int argc, char *argv[])
 
 
   printf ("\n   Exekuzio-denborak\n");
-  printf ("\n   T_irakurtzea: %7.3f s", t_irak);
-  printf ("\n   T_sailkatzea: %7.3f s", t_sailka);
-  printf ("\n   T_alorrak:    %7.3f s", t_alor);
-  printf ("\n   T_idaztea:    %7.3f s", t_idatzi);
+  printf ("\n   T_irakurtzea:           %7.3f s", t_irak);
+  printf ("\n   T_sailkatzea:           %7.3f s", t_sailka);
+  printf ("\n     -T_multzo_gertuena:     %7.3f s", t_tg);
+  printf ("\n     -T_zentroide_berriak:   %7.3f s", t_zb);
+  printf ("\n     -T_balidazioa:          %7.3f s", t_bal);
+  printf ("\n     -T_kideak:              %7.3f s", t_kid);
+  printf ("\n   T_alorrak:              %7.3f s", t_alor);
+  printf ("\n   T_idaztea:              %7.3f s", t_idatzi);
   printf ("\n   ===================");
-  printf ("\n        T_osoa:  %7.3f s\n\n", t_irak + t_sailka + t_alor + t_idatzi);
+  printf ("\n        T_osoa:            %7.3f s\n\n", t_irak + t_sailka + t_alor + t_idatzi);
 
   // Idatzi emaitza batzuk pantailan
   // ==========================================
