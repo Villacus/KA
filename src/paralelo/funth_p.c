@@ -146,6 +146,7 @@ void ztalorren_analisia (struct multzoinfo *kideak, float alor[][ALORRA], struct
     alordist[a].mmin = FLT_MAX;
     alordist[a].multzomin = -1;
 
+    #pragma omp parallel private (k, i, n, mediana, temp)
     for (k=0;k<multzokop;k++) {
 
       n = kideak[k].kop;
@@ -169,14 +170,17 @@ void ztalorren_analisia (struct multzoinfo *kideak, float alor[][ALORRA], struct
           }
         }
 
-        mediana = distantziak[n/2];
-        if (mediana<=alordist[a].mmin) {
-          alordist[a].mmin = mediana;
-          alordist[a].multzomin = k;
-        }
-        if (mediana>=alordist[a].mmax) {
-          alordist[a].mmax = mediana;
-          alordist[a].multzomax = k;
+        #pragma omp critical
+        {
+          mediana = distantziak[n/2];
+          if (mediana<=alordist[a].mmin) {
+            alordist[a].mmin = mediana;
+            alordist[a].multzomin = k;
+          }
+          if (mediana>=alordist[a].mmax) {
+            alordist[a].mmax = mediana;
+            alordist[a].multzomax = k;
+          }
         }
       }
     }
