@@ -147,39 +147,42 @@ void ztalorren_analisia (struct multzoinfo *kideak, float alor[][ALORRA], struct
     alordist[a].multzomin = -1;
 
     #pragma omp parallel private (k, i, n, mediana, temp)
-    for (k=0;k<multzokop;k++) {
+    {
+      #pragma omp for schedule(dynamic, 1)
+      for (k=0;k<multzokop;k++) {
 
-      n = kideak[k].kop;
-      if (n>0) {
-        double distantziak[n];
-        // Kalkulatu distantziak
-        for (i=0;i<=n;i++) {
-          distantziak[i] = alor[kideak[k].osagaiak[i]][a];
-        }
+        n = kideak[k].kop;
+        if (n>0) {
+          double distantziak[n];
+          // Kalkulatu distantziak
+          for (i=0;i<=n;i++) {
+            distantziak[i] = alor[kideak[k].osagaiak[i]][a];
+          }
 
-        // Ordenatu distantziak
-        int l, m;
-        double temp;
-        for (l = 0; l < n - 1; l++) {
-          for (m = 0; m < n - 1 - l; m++) {
-            if (distantziak[m] > distantziak[m + 1]) {
-              temp = distantziak[m];
-              distantziak[m] = distantziak[m + 1];
-              distantziak[m + 1] = temp;
+          // Ordenatu distantziak
+          int l, m;
+          double temp;
+          for (l = 0; l < n - 1; l++) {
+            for (m = 0; m < n - 1 - l; m++) {
+              if (distantziak[m] > distantziak[m + 1]) {
+                temp = distantziak[m];
+                distantziak[m] = distantziak[m + 1];
+                distantziak[m + 1] = temp;
+              }
             }
           }
-        }
 
-        #pragma omp critical
-        {
-          mediana = distantziak[n/2];
-          if (mediana<=alordist[a].mmin) {
-            alordist[a].mmin = mediana;
-            alordist[a].multzomin = k;
-          }
-          if (mediana>=alordist[a].mmax) {
-            alordist[a].mmax = mediana;
-            alordist[a].multzomax = k;
+          #pragma omp critical
+          {
+            mediana = distantziak[n/2];
+            if (mediana<=alordist[a].mmin) {
+              alordist[a].mmin = mediana;
+              alordist[a].multzomin = k;
+            }
+            if (mediana>=alordist[a].mmax) {
+              alordist[a].mmax = mediana;
+              alordist[a].multzomax = k;
+            }
           }
         }
       }
