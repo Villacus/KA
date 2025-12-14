@@ -52,7 +52,7 @@ void multzo_gertuena (int hitzkop, float hitz[][ALDAKOP], float zent[][ALDAKOP],
 	// EGITEKO
 	// sailka: elementu bakoitzaren zentroide hurbilena, haren "taldea"
   int i, j, gertuena;
-  float dist, min_dist;
+  double dist, min_dist;
   
   for (i=0;i<hitzkop;i++) {
     min_dist = DBL_MAX;
@@ -85,11 +85,11 @@ double balidazioa (float hitz[][ALDAKOP], struct multzoinfo *kideak, float zent[
   // Kalkulatu zentroideen trinkotasuna: zentroide bakoitzeko, besteekiko b.b.-ko distantzia
   // Kalkulatu cvi indizea
   int i, j, k, ind_x;
-  float batura, batura2;
+  double batura, batura2;
 
   for (k=0;k<multzokop;k++) {
     batura = 0.0;
-    if (kideak[k].kop>1) {
+    if (kideak[k].kop>0) {
       for (i=0;i<kideak[k].kop;i++) {
         ind_x = kideak[k].osagaiak[i];
         for (j=i+1;j<kideak[k].kop;j++) {
@@ -101,13 +101,13 @@ double balidazioa (float hitz[][ALDAKOP], struct multzoinfo *kideak, float zent[
       multzo_trinko[k] = 0.0;
     }
     batura2 = 0.0;
-    for (i=0;i<multzokop;i++) {
+    for (i=k+1;i<multzokop;i++) {
       batura2 += 2*hitzen_distantzia(zent[k],zent[i]);
     }
     zent_trinko[k] = batura2/(multzokop-1);
   }
 
-  float baturas = 0.0;
+  double baturas = 0.0;
   for (k=0;k<multzokop;k++) {
     baturas += (zent_trinko[k]-multzo_trinko[k])/fmax(zent_trinko[k],multzo_trinko[k]);
   }
