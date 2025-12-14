@@ -257,6 +257,7 @@ void main (int argc, char *argv[])
   printf ("\n     -T_zentroide_berriak:   %7.3f s", t_zb);
   printf ("\n     -T_balidazioa:          %7.3f s", t_bal);
   printf ("\n     -T_kideak:              %7.3f s", t_kid);
+  printf ("\n     -T_medoideak:           %7.3f s", t_med);
   printf ("\n   T_alorrak:              %7.3f s", t_alor);
   printf ("\n   T_idaztea:              %7.3f s", t_idatzi);
   printf ("\n   ===================");
