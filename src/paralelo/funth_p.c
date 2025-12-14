@@ -28,7 +28,6 @@ double hitzen_distantzia(float *hitz1, float *hitz2){
   double a2sum = 0;
   double b2sum = 0;
 
-  #pragma omp parallel for reduction(+:absum,a2sum,b2sum) num_threads(2)
   for (int i=0; i<ALDAKOP; i++) {
     absum += hitz1[i]*hitz2[i];
     a2sum += hitz1[i]*hitz1[i];
@@ -91,9 +90,9 @@ double balidazioa (float hitz[][ALDAKOP], struct multzoinfo *kideak, float zent[
   double batura;
   double baturas = 0.0;
 
-  #pragma omp parallel private(batura, k, i, j, ind_x)
+  #pragma omp parallel private(k, i, j, ind_x)
   {
-    #pragma omp for schedule(dynamic, 1)
+    #pragma omp for schedule(dynamic, 1) reduction(+:batura) nowait
     for (k=0;k<multzokop;k++) {
       double batura = 0.0;
       if (kideak[k].kop>1) {
@@ -109,11 +108,13 @@ double balidazioa (float hitz[][ALDAKOP], struct multzoinfo *kideak, float zent[
       }
     }
 
-    #pragma omp for schedule(static)
+    #pragma omp for schedule(static) reduction(+:batura)
     for (k=0;k<multzokop;k++) {
       batura = 0.0;
-      for (i=k+1;i<multzokop;i++) {
-        batura += 2*hitzen_distantzia(zent[k],zent[i]);
+      for (i=0;i<multzokop;i++) {
+	if (i!=k) {
+          batura += hitzen_distantzia(zent[k],zent[i]);
+	}
       }
       zent_trinko[k] = batura/(multzokop-1);
     }
