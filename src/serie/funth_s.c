@@ -89,7 +89,7 @@ double balidazioa (float hitz[][ALDAKOP], struct multzoinfo *kideak, float zent[
 
   for (k=0;k<multzokop;k++) {
     batura = 0.0;
-    if (kideak[k].kop>0) {
+    if (kideak[k].kop>1) {
       for (i=0;i<kideak[k].kop;i++) {
         ind_x = kideak[k].osagaiak[i];
         for (j=i+1;j<kideak[k].kop;j++) {
@@ -131,9 +131,9 @@ void ztalorren_analisia (struct multzoinfo *kideak, float alor[][ALORRA], struct
 
   for (a=0;a<ALORRA;a++) {
 
-    alordist[a].mmax = FLT_MIN;
+    alordist[a].mmax = DBL_MIN;
     alordist[a].multzomax = -1;
-    alordist[a].mmin = FLT_MAX;
+    alordist[a].mmin = DBL_MAX;
     alordist[a].multzomin = -1;
 
     for (k=0;k<multzokop;k++) {
@@ -160,11 +160,11 @@ void ztalorren_analisia (struct multzoinfo *kideak, float alor[][ALORRA], struct
         }
 
         mediana = distantziak[n/2];
-        if (mediana<=alordist[a].mmin) {
+        if (mediana<alordist[a].mmin) {
           alordist[a].mmin = mediana;
           alordist[a].multzomin = k;
         }
-        if (mediana>=alordist[a].mmax) {
+        if (mediana>alordist[a].mmax) {
           alordist[a].mmax = mediana;
           alordist[a].multzomax = k;
         }
