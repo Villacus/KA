@@ -101,8 +101,10 @@ double balidazioa (float hitz[][ALDAKOP], struct multzoinfo *kideak, float zent[
       multzo_trinko[k] = 0.0;
     }
     batura2 = 0.0;
-    for (i=k+1;i<multzokop;i++) {
-      batura2 += 2*hitzen_distantzia(zent[k],zent[i]);
+    for (i=0;i<multzokop;i++) {
+      if(i!=k) {
+        batura2 += hitzen_distantzia(zent[k],zent[i]);
+      }
     }
     zent_trinko[k] = batura2/(multzokop-1);
   }
