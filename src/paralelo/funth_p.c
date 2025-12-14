@@ -87,15 +87,15 @@ double balidazioa (float hitz[][ALDAKOP], struct multzoinfo *kideak, float zent[
   // Kalkulatu zentroideen trinkotasuna: zentroide bakoitzeko, besteekiko b.b.-ko distantzia
   // Kalkulatu cvi indizea
   int i, j, k, ind_x;
-  double batura;
+  double batura, batura2;
   double baturas = 0.0;
 
   #pragma omp parallel private(batura, k, i, j, ind_x) num_threads(48)
   {
-    #pragma omp for schedule(dynamic, 1)
     for (k=0;k<multzokop;k++) {
       double batura = 0.0;
       if (kideak[k].kop>1) {
+        #pragma omp for private(i, j, ind_x) reduction(+:batura)
         for (i=0;i<kideak[k].kop;i++) {
           ind_x = kideak[k].osagaiak[i];
           for (j=i+1;j<kideak[k].kop;j++) {
@@ -106,16 +106,14 @@ double balidazioa (float hitz[][ALDAKOP], struct multzoinfo *kideak, float zent[
       } else {
         multzo_trinko[k] = 0.0;
       }
+      batura2 = 0.0;
+      #pragma omp for private(i) reduction(+:batura2)
+      for (i=k+1;i<multzokop;i++) {
+        batura2 += 2*hitzen_distantzia(zent[k],zent[i]);
+      }
+      zent_trinko[k] = batura2/(multzokop-1);
     }
 
-    #pragma omp for schedule(static)
-    for (k=0;k<multzokop;k++) {
-      batura = 0.0;
-      for (i=k+1;i<multzokop;i++) {
-        batura += 2*hitzen_distantzia(zent[k],zent[i]);
-      }
-      zent_trinko[k] = batura/(multzokop-1);
-    }
     }
     for (k=0;k<multzokop;k++) {
       baturas += (zent_trinko[k]-multzo_trinko[k])/fmax(zent_trinko[k],multzo_trinko[k]);
