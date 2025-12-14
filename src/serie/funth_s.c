@@ -9,8 +9,6 @@
 #include <math.h>
 #include <float.h>		// DBL_MAX
 #include <string.h>
-#include <omp.h>
-#include <time.h>
 
 #include "../include/defineth.h"		// konstante eta datu-egituren definizioak
 

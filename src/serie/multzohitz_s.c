@@ -198,7 +198,7 @@ void main (int argc, char *argv[])
   // Idatzi emaitzak emaitzak_p.out fitxategian
   // ==========================================
 
-  f2 = fopen ("../emaitzak/emaitzak_p.out", "w");
+  f2 = fopen ("../emaitzak/emaitzak_s.out", "w");
   if (f2 == NULL) {
     printf ("Errorea emaitzak_p.out fitxategia irekitzean\n");
     exit (-1);
