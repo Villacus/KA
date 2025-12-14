@@ -87,7 +87,7 @@ double balidazioa (float hitz[][ALDAKOP], struct multzoinfo *kideak, float zent[
   // Kalkulatu zentroideen trinkotasuna: zentroide bakoitzeko, besteekiko b.b.-ko distantzia
   // Kalkulatu cvi indizea
   int i, j, k, ind_x;
-  double batura, batura2;
+  float batura, batura2;
 
   for (k=0;k<multzokop;k++) {
     batura = 0.0;
