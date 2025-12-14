@@ -91,9 +91,9 @@ double balidazioa (float hitz[][ALDAKOP], struct multzoinfo *kideak, float zent[
   double batura;
   double baturas = 0.0;
 
-  #pragma omp parallel private(batura, k, i, j, ind_x) num_threads(48)
+  #pragma omp parallel num_threads(64)
   {
-    #pragma omp for schedule(dynamic, 1)
+    #pragma omp for schedule(dynamic, 1) nowait
     for (k=0;k<multzokop;k++) {
       double batura = 0.0;
       if (kideak[k].kop>1) {
@@ -103,25 +103,36 @@ double balidazioa (float hitz[][ALDAKOP], struct multzoinfo *kideak, float zent[
             batura += 2*hitzen_distantzia(hitz[ind_x],hitz[kideak[k].osagaiak[j]]);
           }
         }
+        #pragma omp critical
+        {
         multzo_trinko[k] = batura/(kideak[k].kop*(kideak[k].kop-1));
+        }
       } else {
+        #pragma omp critical
+        {
         multzo_trinko[k] = 0.0;
+        }
       }
+    }
+
+    #pragma omp for schedule(static) nowait
+    for (k=0;k<multzokop;k++) {
+      batura = 0.0;
+      for (i=0;i<multzokop;i++) {
+        if(i!=k) {
+          batura += 2*hitzen_distantzia(zent[k],zent[i]);
+        }
+      }
+      zent_trinko[k] = batura/(multzokop-1);
     }
 
     #pragma omp for schedule(static)
     for (k=0;k<multzokop;k++) {
-      batura = 0.0;
-      for (i=k+1;i<multzokop;i++) {
-        batura += 2*hitzen_distantzia(zent[k],zent[i]);
-      }
-      zent_trinko[k] = batura/(multzokop-1);
-    }
-    }
-    for (k=0;k<multzokop;k++) {
       baturas += (zent_trinko[k]-multzo_trinko[k])/fmax(zent_trinko[k],multzo_trinko[k]);
     
- }
+    }
+  }
+
   return baturas/multzokop;
 }
 
