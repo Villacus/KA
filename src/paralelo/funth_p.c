@@ -221,6 +221,7 @@ void medoideak_kalkulatu(float hitz[][ALDAKOP], struct multzoinfo *kideak, struc
 	int     pos_min;
 
 	// hasieratu egitura
+  #pragma omp parallel for private(i, j)
 	for(i=0; i<multzokop; i++){
 		for(j=0; j<MEDKNN; j++){
 			medoideak[i][j].dist = DBL_MAX;
@@ -229,6 +230,7 @@ void medoideak_kalkulatu(float hitz[][ALDAKOP], struct multzoinfo *kideak, struc
 	}
 
 	// kalkulatu medoideak eta euren bizilagunak
+  #pragma omp parallel for private(i, j, k, talde_tam, i1, i2, dist, dist_min, pos_min) schedule(dynamic, 1)
 	for(i=0; i<multzokop; i++){
 		// medoidea kalkulatu
 		talde_tam = kideak[i].kop;
