@@ -28,6 +28,7 @@ double hitzen_distantzia(float *hitz1, float *hitz2){
   double a2sum = 0;
   double b2sum = 0;
 
+  #pragma omp parallel for reduction(+:absum,a2sum,b2sum) num_threads(2)
   for (int i=0; i<ALDAKOP; i++) {
     absum += hitz1[i]*hitz2[i];
     a2sum += hitz1[i]*hitz1[i];
