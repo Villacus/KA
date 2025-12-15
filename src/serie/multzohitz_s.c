@@ -259,11 +259,11 @@ void main (int argc, char *argv[])
   printf ("\n   T_irakurtzea:               %7.3f s", t_irak);
   printf ("\n   T_sailkatzea:               %7.3f s", t_sailka);
   printf ("\n     -T_clustering:              %7.3f s", t_kid);
-  printf ("\n     -T_hasierako_zentroideak:     %7.3f s", t_hz);
-  printf ("\n     -T_multzo_gertuena:           %7.3f s", t_tg);
-  printf ("\n     -T_zentroide_berriak:         %7.3f s", t_zb);
+  printf ("\n       -T_hasierako_zentroideak:     %7.3f s", t_hz);
+  printf ("\n       -T_multzo_gertuena:           %7.3f s", t_tg);
+  printf ("\n       -T_zentroide_berriak:         %7.3f s", t_zb);
   printf ("\n     -T_balidazioa:              %7.3f s", t_bal);
-  printf ("\n     -T_medoideak:             %7.3f s", t_med);
+  printf ("\n   T_medoideak:             %7.3f s", t_med);
   printf ("\n   T_alorrak:                  %7.3f s", t_alor);
   printf ("\n   T_idaztea:                  %7.3f s", t_idatzi);
   printf ("\n   =======================================");

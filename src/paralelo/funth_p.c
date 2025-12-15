@@ -299,12 +299,14 @@ int zentroide_berriak (float hitz[][ALDAKOP], float zent[][ALDAKOP], int *sailka
     // sailka: hitz bakoitzaren multzoa
     // baturak: multzokideen aldagaien balioak batzeko; azkena kopurua da.
 
+    #pragma omp parallel for collapse()
     for (i=0; i<multzokop; i++)
     for (j=0; j<ALDAKOP+1; j++)
       baturak[i][j] = 0.0;
 
     // Hitz asko prozesatzen dira paraleloan, nahiz eta kalkulu gehiena erreduzioko 
     // aldagai batean egiten den. 
+    #pragma omp parallel for
     for (i=0; i<hitzkop; i++){
       for (j=0; j<ALDAKOP; j++)
         baturak[sailka[i]][j] += hitz[i][j];	// batu multzokideen balioak aldagai bakoitzeko
