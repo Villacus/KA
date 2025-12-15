@@ -55,8 +55,8 @@ void main (int argc, char *argv[])
   FILE    *f1, *f2;
   struct timespec  t1, t2, t3, t4, t5, t6;
   double  t_irak, t_sailka, t_alor, t_idatzi, t_med;
-  struct timespec   t_tg1, t_tg2, t_zb1, t_zb2, t_kid1, t_kid2, t_bal1, t_bal2;
-  double  t_tg = 0.0, t_zb =0.0, t_kid = 0.0, t_bal = 0.0;
+  struct timespec   t_tg1, t_tg2, t_zb1, t_zb2, t_kid1, t_kid2, t_bal1, t_bal2, t_hz1, t_hz2;
+  double  t_tg = 0.0, t_zb =0.0, t_kid = 0.0, t_bal = 0.0, t_hz = 0.0;
 
   hasieratu_unesco_kodeak(unesco_kodeak);
 
@@ -117,8 +117,14 @@ void main (int argc, char *argv[])
 
   while (multzokop < MULTZOKOPMAX && amaitu_sailkapena == 0)
   {
+
+    clock_gettime (CLOCK_REALTIME, &t_kid1);
+
     // Aukeratu lehen zentroideak, ausaz
+    clock_gettime (CLOCK_REALTIME, &t_hz1);
     hasierako_zentroideak (zent);
+    clock_gettime (CLOCK_REALTIME, &t_hz2);
+    t_hz += (t_hz2.tv_sec - t_hz1.tv_sec) + (t_hz2.tv_nsec - t_hz1.tv_nsec) / (double)1e9;
 
     // A. Sailkatze-prozesua, multzokop multzotan
     // ========================================
@@ -141,6 +147,8 @@ void main (int argc, char *argv[])
       clock_gettime (CLOCK_REALTIME, &t_zb2);
       t_zb += (t_zb2.tv_sec - t_zb1.tv_sec) + (t_zb2.tv_nsec - t_zb1.tv_nsec) / (double)1e9;
 
+      clock_gettime (CLOCK_REALTIME, &t_kid2);
+      t_kid += (t_kid2.tv_sec - t_kid1.tv_sec) + (t_kid2.tv_nsec - t_kid1.tv_nsec) / (double)1e9;
 
       iterkop ++;
     }
@@ -148,7 +156,6 @@ void main (int argc, char *argv[])
 
     // B. Sailkatzearen "kalitatea"
     // ===========================
-    clock_gettime (CLOCK_REALTIME, &t_kid1);
     for (i=0; i<multzokop; i++)  kideak[i].kop = 0;
 
     // Multzo bakoitzeko hitzak (osagaiak) eta kopurua
@@ -158,8 +165,6 @@ void main (int argc, char *argv[])
       kideak[multzoa].osagaiak[kideak[multzoa].kop] = i;
       kideak[multzoa].kop ++;
     }
-    clock_gettime (CLOCK_REALTIME, &t_kid2);
-    t_kid += (t_kid2.tv_sec - t_kid1.tv_sec) + (t_kid2.tv_nsec - t_kid1.tv_nsec) / (double)1e9;
     
     // Sailkatzearen balidazioa eta konbergentzia
     /** OSATZEKO funth_s.c fitxategian **/
@@ -251,17 +256,18 @@ void main (int argc, char *argv[])
 
 
   printf ("\n   Exekuzio-denborak\n");
-  printf ("\n   T_irakurtzea:           %7.3f s", t_irak);
-  printf ("\n   T_sailkatzea:           %7.3f s", t_sailka);
-  printf ("\n     -T_multzo_gertuena:     %7.3f s", t_tg);
-  printf ("\n     -T_zentroide_berriak:   %7.3f s", t_zb);
-  printf ("\n     -T_balidazioa:          %7.3f s", t_bal);
-  printf ("\n     -T_kideak:              %7.3f s", t_kid);
-  printf ("\n     -T_medoideak:           %7.3f s", t_med);
-  printf ("\n   T_alorrak:              %7.3f s", t_alor);
-  printf ("\n   T_idaztea:              %7.3f s", t_idatzi);
-  printf ("\n   ===================");
-  printf ("\n        T_osoa:            %7.3f s\n\n", t_irak + t_sailka + t_alor + t_idatzi);
+  printf ("\n   T_irakurtzea:               %7.3f s", t_irak);
+  printf ("\n   T_sailkatzea:               %7.3f s", t_sailka);
+  printf ("\n     -T_clustering:              %7.3f s", t_kid);
+  printf ("\n     -T_hasierako_zentroideak:     %7.3f s", t_hz);
+  printf ("\n     -T_multzo_gertuena:           %7.3f s", t_tg);
+  printf ("\n     -T_zentroide_berriak:         %7.3f s", t_zb);
+  printf ("\n     -T_balidazioa:              %7.3f s", t_bal);
+  printf ("\n     -T_medoideak:             %7.3f s", t_med);
+  printf ("\n   T_alorrak:                  %7.3f s", t_alor);
+  printf ("\n   T_idaztea:                  %7.3f s", t_idatzi);
+  printf ("\n   =======================================");
+  printf ("\n        T_osoa:                %7.3f s\n\n", t_irak + t_sailka + t_med + t_alor + t_idatzi);
 
   // Idatzi emaitza batzuk pantailan
   // ==========================================
