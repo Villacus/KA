@@ -55,7 +55,7 @@ void multzo_gertuena (int hitzkop, float hitz[][ALDAKOP], float zent[][ALDAKOP],
   int i, j, gertuena;
   double dist, min_dist;
 
-  #pragma omp parallel for private(i, j, dist, min_dist, gertuena)
+  #pragma omp parallel for private(i, j, dist, min_dist, gertuena) schedule(static)
   for (i=0;i<hitzkop;i++) {
     min_dist = DBL_MAX;
     for (j=0;j<multzokop;j++) {
@@ -108,21 +108,20 @@ double balidazioa (float hitz[][ALDAKOP], struct multzoinfo *kideak, float zent[
       }
     }
 
-    #pragma omp for schedule(static) reduction(+:batura)
     for (k=0;k<multzokop;k++) {
       batura = 0.0;
       for (i=0;i<multzokop;i++) {
-	if (i!=k) {
+        if (i!=k) {
           batura += hitzen_distantzia(zent[k],zent[i]);
-	}
+        }
       }
       zent_trinko[k] = batura/(multzokop-1);
     }
-    }
-    for (k=0;k<multzokop;k++) {
-      baturas += (zent_trinko[k]-multzo_trinko[k])/fmax(zent_trinko[k],multzo_trinko[k]);
-    
- }
+  }
+  for (k=0;k<multzokop;k++) {
+    baturas += (zent_trinko[k]-multzo_trinko[k])/fmax(zent_trinko[k],multzo_trinko[k]);
+          
+  }
   return baturas/multzokop;
 }
 
