@@ -146,12 +146,12 @@ void main (int argc, char *argv[])
       clock_gettime (CLOCK_REALTIME, &t_zb2);
       t_zb += (t_zb2.tv_sec - t_zb1.tv_sec) + (t_zb2.tv_nsec - t_zb1.tv_nsec) / (double)1e9;
 
-      clock_gettime (CLOCK_REALTIME, &t_kid2);
-      t_kid += (t_kid2.tv_sec - t_kid1.tv_sec) + (t_kid2.tv_nsec - t_kid1.tv_nsec) / (double)1e9;
- 
-
       iterkop ++;
     }
+
+      clock_gettime (CLOCK_REALTIME, &t_kid2);
+      t_kid += (t_kid2.tv_sec - t_kid1.tv_sec) + (t_kid2.tv_nsec - t_kid1.tv_nsec) / (double)1e9;
+
     printf ("   Multzo kopurua: %d -- Iterazio kopurua: %d\n", multzokop, iterkop);
 
     // B. Sailkatzearen "kalitatea"
