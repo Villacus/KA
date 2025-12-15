@@ -149,7 +149,7 @@ void main (int argc, char *argv[])
 
       iterkop ++;
     }
-    
+
     clock_gettime (CLOCK_REALTIME, &t_kid2);
     t_kid += (t_kid2.tv_sec - t_kid1.tv_sec) + (t_kid2.tv_nsec - t_kid1.tv_nsec) / (double)1e9;
 
@@ -264,7 +264,7 @@ void main (int argc, char *argv[])
   printf ("\n       -T_multzo_gertuena:           %7.3f s", t_tg);
   printf ("\n       -T_zentroide_berriak:         %7.3f s", t_zb);
   printf ("\n     -T_balidazioa:              %7.3f s", t_bal);
-  printf ("\n   T_medoideak:             %7.3f s", t_med);
+  printf ("\n   T_medoideak:                %7.3f s", t_med);
   printf ("\n   T_alorrak:                  %7.3f s", t_alor);
   printf ("\n   T_idaztea:                  %7.3f s", t_idatzi);
   printf ("\n   =======================================");
