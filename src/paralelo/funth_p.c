@@ -143,7 +143,7 @@ void ztalorren_analisia (struct multzoinfo *kideak, float alor[][ALORRA], struct
     alordist[a].mmin = FLT_MAX;
     alordist[a].multzomin = -1;
 
-    #pragma omp parallel private (k, i, n, mediana)
+    #pragma omp parallel private (k, i, n, mediana) num_threads(48)
     {
       #pragma omp for schedule(dynamic, 1)
       for (k=0;k<multzokop;k++) {
