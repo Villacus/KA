@@ -101,13 +101,6 @@ gcc -o programa_nagusia -fopenmp *.c
 OMP_NUM_THREADS=8 ./programa_nagusia
 ```
 
-## **Hardware/Software**
-
-- **CPU:** 8-core procesadorea
-- **Memoria:** ≥ 16 GB RAM
-- **Sistema:** Linux
-- **Kompiladorea:** GCC OpenMP sostenguarekin
-
 ## **Egileak**
    - Thomas Mugica
    - Oier Villanueva
