@@ -143,7 +143,7 @@ void ztalorren_analisia (struct multzoinfo *kideak, float alor[][ALORRA], struct
     alordist[a].mmin = FLT_MAX;
     alordist[a].multzomin = -1;
 
-    #pragma omp parallel private (k, i, n, mediana)
+    #pragma omp parallel private (k, i, n, mediana) num_threads(48)
     {
       #pragma omp for schedule(dynamic, 1)
       for (k=0;k<multzokop;k++) {
@@ -226,7 +226,7 @@ void medoideak_kalkulatu(float hitz[][ALDAKOP], struct multzoinfo *kideak, struc
 	}
 
 	// kalkulatu medoideak eta euren bizilagunak
-  #pragma omp parallel for private(i, j, k, talde_tam, i1, i2, dist, dist_min, pos_min) schedule(dynamic, 10)
+  #pragma omp parallel for private(i, j, k, talde_tam, i1, i2, dist, dist_min, pos_min) schedule(dynamic, 1)
 	for(i=0; i<multzokop; i++){
 		// medoidea kalkulatu
 		talde_tam = kideak[i].kop;
