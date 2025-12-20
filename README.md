@@ -109,14 +109,6 @@ OMP_NUM_THREADS=8 ./programa_nagusia
 - **Kompiladorea:** GCC OpenMP sostenguarekin
 
 ## **Egileak**
-
-[Zure izena/lagunen izenak]
-
----
-
-**Oharra:** Programa honek UNESCOren zientzia-teknologia alorrak erabiltzen ditu multzokatze kalitatea ebaluatzeko.
-
-## Egileak:
-- Thomas Mugica
-- Oier Villanueva
-- Jon Pacios
+   - Thomas Mugica
+   - Oier Villanueva
+   - Jon Pacios
